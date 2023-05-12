@@ -65,13 +65,14 @@ class Application:
   BUTTON_KEY = "button_1"
   CSV_HEADER = "measurement_id,user_name,time_stamp,activity,accelerometer_x,accelerometer_y,accelerometer_z,gyroscope_x,gyroscope_y,gyroscope_z,rotation_pitch,rotation_roll,rotation_yaw\n"
 
-  def __init__(self, user_name: str, activity: Activity, duration: int, pps: int) -> None:
+  def __init__(self, user_name: str, activity: Activity, duration: int, pps: int, wait: int) -> None:
     self._input = Input(self.PORT, self.CAPABILITIES, self.BUTTON_KEY)
 
     self._user_name = user_name
     self._activity = activity
     self._duration =  duration
     self._pps = 1 / pps #polls per second; callback mode averages around 77 per second (see archive/callback_count.py); setting default to 50 to avoid too many double measurements;
+    self._wait = wait
 
     self._running = True
     self._recording = False
@@ -86,6 +87,8 @@ class Application:
     while self._running:
 
       if self._input.get_button_state():
+        print(f"* * * recording starts in {self._wait} seconds. * * *\n")
+        time.sleep(self._wait)
         self._recording = True
         start_time = time.time()
         print(f"* * * recording has started at unix time {time.ctime(start_time)}. * * *\n")
@@ -144,8 +147,9 @@ if __name__ == "__main__":
   parser.add_argument("activity", type=str, choices=["waving", "standing", "lying", "jumping"], help="provide an activity that you want to measure. activities are: waving, standing, lying and jumping.")
   parser.add_argument("-d", "--duration", default=10, type=check_positive_int, help="provide a duration in seconds that you want to measure your activity. the application automatically stops the recording and creates a csv file. (unit is SECONDS, must be greater than 0)")
   parser.add_argument("-pps", "--pollspersecond", default=50, type=check_positive_int, help="determine the frequency that the DIPPID device is polled for sensor data. (unit is SECONDS, must be greater than 0)")
+  parser.add_argument("-w", "--wait", default=4, type=check_positive_int, help="when pressing button_1 to start recording, the application waits X second so that the user can put the device inside his pocket and get ready for the activity.")
 
   args = parser.parse_args()
 
-  application = Application(args.user_name, Activity[args.activity.upper()], args.duration, args.pollspersecond)
+  application = Application(args.user_name, Activity[args.activity.upper()], args.duration, args.pollspersecond, args.wait)
   application.run()
