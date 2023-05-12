@@ -59,7 +59,6 @@ class Input:
 class Application:
 
   PORT = 5700
-  PRIORITY = 1
   CURR_DIR = os.path.dirname(__file__)
   OUTPUT_FOLDER = "/data/"
   CAPABILITIES = ["accelerometer", "gyroscope", "rotation"]
@@ -72,7 +71,7 @@ class Application:
     self._user_name = user_name
     self._activity = activity
     self._duration =  duration
-    self._pps = 1 / pps #polls per second; callback mode averages around 26 per second (see archive/callback_count.py); setting default to 75 to avoid too many double measurements;
+    self._pps = 1 / pps #polls per second; callback mode averages around 77 per second (see archive/callback_count.py); setting default to 50 to avoid too many double measurements;
 
     self._running = True
     self._recording = False
@@ -144,7 +143,7 @@ if __name__ == "__main__":
   parser.add_argument("user_name", type=str, help="provide a name that maps the activity pattern to a certain user.")
   parser.add_argument("activity", type=str, choices=["waving", "standing", "lying", "jumping"], help="provide an activity that you want to measure. activities are: waving, standing, lying and jumping.")
   parser.add_argument("-d", "--duration", default=10, type=check_positive_int, help="provide a duration in seconds that you want to measure your activity. the application automatically stops the recording and creates a csv file. (unit is SECONDS, must be greater than 0)")
-  parser.add_argument("-pps", "--pollspersecond", default=75, type=check_positive_int, help="determine the frequency that the DIPPID device is polled for sensor data. (unit is SECONDS, must be greater than 0)")
+  parser.add_argument("-pps", "--pollspersecond", default=50, type=check_positive_int, help="determine the frequency that the DIPPID device is polled for sensor data. (unit is SECONDS, must be greater than 0)")
 
   args = parser.parse_args()
 
