@@ -147,7 +147,7 @@ if __name__ == "__main__":
   parser.add_argument("activity", type=str, choices=["waving", "standing", "lying", "jumping"], help="provide an activity that you want to measure. activities are: waving, standing, lying and jumping.")
   parser.add_argument("-d", "--duration", default=10, type=check_positive_int, help="provide a duration in seconds that you want to measure your activity. the application automatically stops the recording and creates a csv file. (unit is SECONDS, must be greater than 0)")
   parser.add_argument("-pps", "--pollspersecond", default=50, type=check_positive_int, help="determine the frequency that the DIPPID device is polled for sensor data. (unit is SECONDS, must be greater than 0)")
-  parser.add_argument("-w", "--wait", default=4, type=check_positive_int, help="when pressing button_1 to start recording, the application waits X second so that the user can put the device inside his pocket and get ready for the activity.")
+  parser.add_argument("-w", "--wait", default=4, type=check_positive_int, help="when pressing button_1 to start recording, the application waits X second so that the user can put the device inside his pocket and get ready for the activity. (unit is SECONDS, must be greater than 0)")
 
   args = parser.parse_args()
 
