@@ -2,16 +2,9 @@
 import os, time, sys
 from typing import TypedDict
 from argparse import ArgumentParser, ArgumentTypeError
-from enum import Enum
 
 from DIPPID import SensorUDP
-
-
-class Activity(Enum):
-  WAVING = 1
-  STANDING = 2
-  LYING = 3
-  JUMPING = 4
+from activity import Activity
 
 
 #own code: https://github.com/ITT23/assignment-01-dippid-and-pyglet-vairasza/blob/master/2d-game/main.py
@@ -144,7 +137,7 @@ def check_positive_int(value) -> bool:
 if __name__ == "__main__":
   parser = ArgumentParser(prog="Data Gatherer", description="this application gatheres activity data from a M5Stack or an Android smartphone. data contains these values: acceleration, gyroscope, angle and timestamp. data will be saved to a csv file.")
   parser.add_argument("user_name", type=str, help="provide a name that maps the activity pattern to a certain user.")
-  parser.add_argument("activity", type=str, choices=["waving", "standing", "lying", "jumping"], help="provide an activity that you want to measure. activities are: waving, standing, lying and jumping.")
+  parser.add_argument("activity", type=str, choices=["standing", "lying", "jumping"], help="provide an activity that you want to measure. activities are: standing, lying and jumping.")
   parser.add_argument("-d", "--duration", default=10, type=check_positive_int, help="provide a duration in seconds that you want to measure your activity. the application automatically stops the recording and creates a csv file. (unit is SECONDS, must be greater than 0)")
   parser.add_argument("-pps", "--pollspersecond", default=50, type=check_positive_int, help="determine the frequency that the DIPPID device is polled for sensor data. (unit is SECONDS, must be greater than 0)")
   parser.add_argument("-w", "--wait", default=5, type=check_positive_int, help="when pressing button_1 to start recording, the application waits X second so that the user can put the device inside his pocket and get ready for the activity. (unit is SECONDS, must be greater than 0)")
